@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -12,4 +12,8 @@ public static class Helper
         return dicData;
     }
 
+    public static bool Is<T>(this T obj, Type type)
+    {
+        return obj.GetType() == type;
+    }
 }

@@ -7,5 +7,4 @@ public class MissionObjectData
 {
     [SerializeField]
     public List<List<List<int>>> data { get; set; }
-    //public List<List<int>> data;
 }
