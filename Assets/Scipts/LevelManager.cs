@@ -107,17 +107,17 @@ public class LevelManager : MonoBehaviour
 
     private void SpawnNextMissionPart()
     {
-        Debug.Log("Here");
         currentLevelMissionObject = new GameObject();
         currentLevelMissionObject.name = "missionObject";
         currentLevelMissionObject.transform.position = Vector3.zero;
         currentLevelMissionObject.transform.parent = currentLevel.transform;
         List<List<int>> objectData = currentMissionObjects.data[currentLevelProgress];
+        BreakManager.instance.InitBlocks(objectData.Count, objectData[0].Count);
+
         for (int i = 0; i < objectData.Count; i++)
         {
             for (int j = 0; j < objectData[i].Count; j++)
             {
-                Debug.Log("here");
                 switch (objectData[i][j])
                 {
                     //empty
@@ -127,13 +127,18 @@ public class LevelManager : MonoBehaviour
 
                     //center pieces
                     case 1:
-                        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        cube.transform.position = new Vector3(j, 0, i);
-                        cube.transform.parent = currentLevelMissionObject.transform;
+                        GameObject centerCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        centerCube.transform.position = new Vector3(j, 0, i);
+                        centerCube.transform.parent = currentLevelMissionObject.transform;
+                        centerCube.AddComponent<Center>().Init(i,j);
                         break;
 
                     //mission pieces
                     default:
+                        GameObject missionCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        missionCube.transform.position = new Vector3(j, 0, i);
+                        missionCube.transform.parent = currentLevelMissionObject.transform;
+                        missionCube.AddComponent<Mission>().Init(i, j);
                         break;
                 }
             }

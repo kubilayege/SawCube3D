@@ -16,4 +16,13 @@ public static class Helper
     {
         return obj.GetType() == type;
     }
+
+    public static List<T> SmartAdd<T>(this List<T> list,T item)
+    {
+        if (item != null)
+            list.Add(item);
+
+        return list;
+    }
+
 }

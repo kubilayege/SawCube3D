@@ -11,6 +11,7 @@ public abstract class Block : MonoBehaviour
     {
         rowIndex = _row;
         colIndex = _col;
+        BreakManager.blocks[rowIndex, colIndex] = this;
     }
 
     public abstract void Break();

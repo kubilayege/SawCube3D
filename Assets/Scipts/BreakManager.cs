@@ -6,12 +6,19 @@ using UnityEngine;
 public class BreakManager : MonoBehaviour
 {
     public static BreakManager instance;
-    Queue<Block> blocksToDestroy;
+
+    public static Block[,] blocks;
+
+    public Queue<Block> blocksToDestroy;
     Coroutine breakingCor;    
-    
     void Awake()
     {
         instance = this;
+    }
+
+    public void InitBlocks(int row,int col)
+    {
+        blocks = new Block[row,col];
     }
 
     public void ProcessBlock(Block block)
@@ -31,8 +38,10 @@ public class BreakManager : MonoBehaviour
             Block curBlock = blocksToDestroy.Dequeue();
             if (curBlock.Is(typeof(Mission)))
             {
-                //Find curBlocks neighbors
-                //Destroy curBlock
+                List<Block> neighbours = new List<Block>();
+                GetNeighbours(curBlock, neighbours);
+                Destroy(curBlock.gameObject);
+                
                 //Check neighbours for possible splitup
                 //Destroy neighbours and its connecting blocks neighbours
             }
@@ -42,6 +51,14 @@ public class BreakManager : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    private static void GetNeighbours(Block curBlock, List<Block> neighbours)
+    {
+        neighbours.SmartAdd(blocks[curBlock.rowIndex + 1, curBlock.colIndex]);
+        neighbours.SmartAdd(blocks[curBlock.rowIndex, curBlock.colIndex + 1]);
+        neighbours.SmartAdd(blocks[curBlock.rowIndex - 1, curBlock.colIndex]);
+        neighbours.SmartAdd(blocks[curBlock.rowIndex, curBlock.colIndex - 1]);
     }
 }
 
