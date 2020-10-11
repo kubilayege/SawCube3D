@@ -23,10 +23,15 @@ public class BreakManager : MonoBehaviour
 
     public void ProcessBlock(Block block)
     {
+
+        if (blocksToDestroy?.Count == 0)
+            breakingCor = null;
+
         if (breakingCor == null)
             breakingCor = StartCoroutine(BreakingCor(block));
         else
             blocksToDestroy.Enqueue(block);
+
     }
 
     private IEnumerator BreakingCor(Block block)
@@ -35,12 +40,19 @@ public class BreakManager : MonoBehaviour
         blocksToDestroy.Enqueue(block);
         while (blocksToDestroy.Count > 0)
         {
+            Debug.Log(blocksToDestroy.Count);
             Block curBlock = blocksToDestroy.Dequeue();
             if (curBlock.Is(typeof(Mission)))
             {
-                List<Block> neighbours = GetNeighbours(curBlock,typeof(Center));
-                
+                List<Block> neighbours = new List<Block>();
+                Debug.Log(neighbours.Count);
+
+                blocks[block.rowIndex, block.colIndex] = null;
+
+                GetNeighbours(neighbours, curBlock, typeof(Center));
                 Destroy(curBlock.gameObject);
+
+                Debug.Log(neighbours.Count);
                 List<List<Block>> blockListsToDestroy = new List<List<Block>>();
                 foreach (var _block in neighbours)
                 {
@@ -50,12 +62,18 @@ public class BreakManager : MonoBehaviour
                     CheckNeighbours(_block, blocksToDestroy, centerBlocks);
 
                     if (centerBlocks.IsEmpty())
+                    {
                         blockListsToDestroy.Add(blocksToDestroy);
+                        Debug.Log("Destroy");
+                    }
 
                 }
                 
+
+
                 foreach(var list in blockListsToDestroy)
                 {
+                    //join same lists
                     StartCoroutine(BreakAsync(list));
                 }
             }
@@ -71,59 +89,77 @@ public class BreakManager : MonoBehaviour
     {
         foreach(var block in list)
         {
+            if (block == null)
+                continue;
             blocks[block.rowIndex, block.colIndex] = null;
             Destroy(block.gameObject);
             yield return null;
         }
     }
 
-    private static void CheckNeighbours(Block currentBlock, List<Block> checkedSoFar, List<Block> centerBlocks)
+    private static bool CheckNeighbours(Block currentBlock, List<Block> checkedSoFar, List<Block> centerBlocks)
     {
         if (currentBlock.Is(typeof(Mission)))
-            checkedSoFar.Add(currentBlock);
+            checkedSoFar.SmartAdd(currentBlock);
         else
         {
-            centerBlocks.Add(currentBlock);
+            centerBlocks.SmartAdd(currentBlock);
             if (checkedSoFar.Count == 0)
-                return;
+                return false;
         }
 
-        var currentMissionNeighbours = GetNeighbours(currentBlock, typeof(Center));
-        var currentCenterNeighbours = GetNeighbours(currentBlock, typeof(Mission));
-        
+        var currentMissionNeighbours = new List<Block>();
+        GetNeighbours(currentMissionNeighbours,currentBlock, typeof(Center));
+        var currentCenterNeighbours = new List<Block>();
+        GetNeighbours(currentCenterNeighbours,currentBlock, typeof(Mission));
 
-        if(currentCenterNeighbours.Count > 0)
+
+
+        if (currentCenterNeighbours.Count > 0)
         {
             foreach (var block in currentCenterNeighbours)
             {
                 centerBlocks.SmartAdd(block);
             }
-            return;
+            return false;
         }
 
         if (currentMissionNeighbours.IsEmpty())
-            return;
+            return true;
 
+
+        var nextNeighbours = new List<Block>();
         foreach(var block in currentMissionNeighbours)
         {
-            checkedSoFar.SmartAdd(block);
+            if (checkedSoFar.SmartAdd(block))
+            { nextNeighbours.Add(block);
+                //Debug.Log(block.rowIndex + "," + block.colIndex);
+            }
         }
 
-        foreach (var block in currentMissionNeighbours)
+
+        bool stop = true ;
+        foreach (var block in nextNeighbours)
         {
-            CheckNeighbours(block, checkedSoFar, centerBlocks);
+            stop = CheckNeighbours(block, checkedSoFar, centerBlocks);
+            if (!stop)
+                break;
+            else
+                continue;
         }
+        if (!stop)
+            return false;
+        return true;
 
     }
 
-    private static List<Block> GetNeighbours(Block curBlock,Type exclude)
+    private static void GetNeighbours(List<Block> neighbours, Block curBlock,Type exclude)
     {
-        List<Block> neighbours = new List<Block>();
+        List<Block> currentList = new List<Block>();
         neighbours.SmartAdd(blocks[curBlock.rowIndex + 1, curBlock.colIndex], exclude);
         neighbours.SmartAdd(blocks[curBlock.rowIndex, curBlock.colIndex + 1], exclude);
         neighbours.SmartAdd(blocks[curBlock.rowIndex - 1, curBlock.colIndex], exclude);
         neighbours.SmartAdd(blocks[curBlock.rowIndex, curBlock.colIndex - 1], exclude);
-        return neighbours;
     }
 }
 

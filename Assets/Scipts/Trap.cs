@@ -6,6 +6,7 @@ public class Trap : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<Block>().Break();
+        
+        other.GetComponent<Block>()?.Break();
     }
 }

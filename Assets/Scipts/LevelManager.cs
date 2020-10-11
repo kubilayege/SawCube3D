@@ -27,6 +27,10 @@ public class LevelManager : MonoBehaviour
     public MissionObjectData currentMissionObjects;
 
 
+    public Material centerMat;
+    public Material missionMat;
+
+
     private void Start()
     {
         ChangeLevel(NextLevelState.Restart);
@@ -129,6 +133,7 @@ public class LevelManager : MonoBehaviour
                     case 1:
                         GameObject centerCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         centerCube.transform.position = new Vector3(j, 0, i);
+                        centerCube.GetComponent<MeshRenderer>().material = centerMat;
                         centerCube.transform.parent = currentLevelMissionObject.transform;
                         centerCube.AddComponent<Center>().Init(i,j);
                         break;
@@ -137,6 +142,7 @@ public class LevelManager : MonoBehaviour
                     default:
                         GameObject missionCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         missionCube.transform.position = new Vector3(j, 0, i);
+                        missionCube.GetComponent<MeshRenderer>().material = missionMat;
                         missionCube.transform.parent = currentLevelMissionObject.transform;
                         missionCube.AddComponent<Mission>().Init(i, j);
                         break;
@@ -147,6 +153,5 @@ public class LevelManager : MonoBehaviour
 
         currentLevelMissionDestination = currentLevelData.missionObjectDestinations[currentLevelProgress];
 
-            ProgressLevel();
     }
 }
