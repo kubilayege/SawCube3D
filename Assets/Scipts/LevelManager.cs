@@ -30,6 +30,12 @@ public class LevelManager : MonoBehaviour
     public Material centerMat;
     public Material missionMat;
 
+    public static LevelManager instance;
+
+    public void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -51,7 +57,7 @@ public class LevelManager : MonoBehaviour
         ProgressLevel();
     }
 
-    private void ProgressLevel()
+    public void ProgressLevel()
     {
         if (currentLevelMissionObject != null)
             StartCoroutine(ProgressAnimation());
@@ -145,6 +151,7 @@ public class LevelManager : MonoBehaviour
                         missionCube.GetComponent<MeshRenderer>().material = missionMat;
                         missionCube.transform.parent = currentLevelMissionObject.transform;
                         missionCube.AddComponent<Mission>().Init(i, j);
+                        BreakManager.instance.missionCount++;
                         break;
                 }
             }

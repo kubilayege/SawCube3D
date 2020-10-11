@@ -152,7 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - {fileID: 11400000, guid: 089d1717a7280c0498c08626c16fd205, type: 2}
-  - {fileID: 11400000, guid: 4527917c11f94cc479713e46bc9c6b7a, type: 2}
   currentLevelData: {fileID: 0}
   currentLevel: {fileID: 0}
   currentLevelMissionObject: {fileID: 0}
@@ -435,6 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d375d9f744dfd94faaa44bac8703262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  missionCount: 0
 --- !u!1 &1755183038
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 1755183041}
   - component: {fileID: 1755183040}
   - component: {fileID: 1755183039}
+  - component: {fileID: 1755183045}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -483,7 +484,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.8, y: 0.8, z: 0.8}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1755183041
 MeshRenderer:
@@ -552,9 +553,21 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755183038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.25, y: 0, z: -0.75}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1755183045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755183038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba70e11fae743446922c48aa9440253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

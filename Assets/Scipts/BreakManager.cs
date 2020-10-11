@@ -8,7 +8,7 @@ public class BreakManager : MonoBehaviour
     public static BreakManager instance;
 
     public static Block[,] blocks;
-
+    public int missionCount;
     public Queue<Block> blocksToDestroy;
     Coroutine breakingCor;    
     void Awake()
@@ -18,6 +18,7 @@ public class BreakManager : MonoBehaviour
 
     public void InitBlocks(int row,int col)
     {
+        missionCount = 0;
         blocks = new Block[row,col];
     }
 
@@ -46,11 +47,13 @@ public class BreakManager : MonoBehaviour
             {
                 List<Block> neighbours = new List<Block>();
                 Debug.Log(neighbours.Count);
-
+                missionCount--;
                 blocks[block.rowIndex, block.colIndex] = null;
 
                 GetNeighbours(neighbours, curBlock, typeof(Center));
                 Destroy(curBlock.gameObject);
+                if (missionCount <= 0)
+                    LevelManager.instance.ProgressLevel();
 
                 Debug.Log(neighbours.Count);
                 List<List<Block>> blockListsToDestroy = new List<List<Block>>();
@@ -93,7 +96,13 @@ public class BreakManager : MonoBehaviour
                 continue;
             blocks[block.rowIndex, block.colIndex] = null;
             Destroy(block.gameObject);
+            missionCount--;
             yield return null;
+        }
+        if (missionCount <= 0)
+        {
+            Debug.Log("Pass Level");
+            LevelManager.instance.ProgressLevel();
         }
     }
 
