@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player main;
+
+    private Vector3 spawn;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        main = this;
+        spawn = transform.position;
+    }
+
+    public void Fail()
+    {
+        transform.position = spawn;
     }
 
     // Update is called once per frame

@@ -7,9 +7,13 @@ public class BreakManager : MonoBehaviour
 {
     public static BreakManager instance;
 
+    private static int _row;
+    private static int _col;
     public static Block[,] blocks;
     public int missionCount;
     public Queue<Block> blocksToDestroy;
+
+
     Coroutine breakingCor;    
     void Awake()
     {
@@ -20,6 +24,8 @@ public class BreakManager : MonoBehaviour
     {
         missionCount = 0;
         blocks = new Block[row,col];
+        _row = row;
+        _col = col;
     }
 
     public void ProcessBlock(Block block)
@@ -41,7 +47,6 @@ public class BreakManager : MonoBehaviour
         blocksToDestroy.Enqueue(block);
         while (blocksToDestroy.Count > 0)
         {
-            Debug.Log(blocksToDestroy.Count);
             Block curBlock = blocksToDestroy.Dequeue();
             if (curBlock.Is(typeof(Mission)))
             {
@@ -55,7 +60,6 @@ public class BreakManager : MonoBehaviour
                 if (missionCount <= 0)
                     LevelManager.instance.ProgressLevel();
 
-                Debug.Log(neighbours.Count);
                 List<List<Block>> blockListsToDestroy = new List<List<Block>>();
                 foreach (var _block in neighbours)
                 {
@@ -67,7 +71,6 @@ public class BreakManager : MonoBehaviour
                     if (centerBlocks.IsEmpty())
                     {
                         blockListsToDestroy.Add(blocksToDestroy);
-                        Debug.Log("Destroy");
                     }
 
                 }
@@ -82,7 +85,10 @@ public class BreakManager : MonoBehaviour
             }
             else
             {
+
+                Player.main.Fail();
                 //Fail Level
+                LevelManager.instance.ChangeLevel(NextLevelState.Restart);
             }
             yield return null;
         }
@@ -94,14 +100,19 @@ public class BreakManager : MonoBehaviour
         {
             if (block == null)
                 continue;
-            blocks[block.rowIndex, block.colIndex] = null;
-            Destroy(block.gameObject);
-            missionCount--;
+
+            if(blocks[block.rowIndex, block.colIndex] != null)
+            {
+                blocks[block.rowIndex, block.colIndex] = null;
+                Destroy(block.gameObject);
+                missionCount--;
+            }
+
             yield return null;
         }
+
         if (missionCount <= 0)
         {
-            Debug.Log("Pass Level");
             LevelManager.instance.ProgressLevel();
         }
     }
@@ -165,10 +176,17 @@ public class BreakManager : MonoBehaviour
     private static void GetNeighbours(List<Block> neighbours, Block curBlock,Type exclude)
     {
         List<Block> currentList = new List<Block>();
-        neighbours.SmartAdd(blocks[curBlock.rowIndex + 1, curBlock.colIndex], exclude);
-        neighbours.SmartAdd(blocks[curBlock.rowIndex, curBlock.colIndex + 1], exclude);
-        neighbours.SmartAdd(blocks[curBlock.rowIndex - 1, curBlock.colIndex], exclude);
-        neighbours.SmartAdd(blocks[curBlock.rowIndex, curBlock.colIndex - 1], exclude);
+        if(_row > curBlock.rowIndex + 1)
+            neighbours.SmartAdd(blocks?[curBlock.rowIndex + 1, curBlock.colIndex], exclude);
+
+        if (curBlock.rowIndex - 1 >= 0)
+            neighbours.SmartAdd(blocks?[curBlock.rowIndex - 1, curBlock.colIndex], exclude);
+
+        if(_col > curBlock.colIndex + 1)
+            neighbours.SmartAdd(blocks?[curBlock.rowIndex, curBlock.colIndex + 1], exclude);
+
+        if (curBlock.colIndex - 1 >= 0)
+            neighbours.SmartAdd(blocks?[curBlock.rowIndex, curBlock.colIndex - 1], exclude);
     }
 }
 
