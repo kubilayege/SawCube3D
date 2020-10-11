@@ -17,12 +17,26 @@ public static class Helper
         return obj.GetType() == type;
     }
 
-    public static List<T> SmartAdd<T>(this List<T> list,T item)
+    public static void SmartAdd<T>(this List<T> list,T item, Type exclude)
     {
-        if (item != null)
+        if (item != null && !list.Contains(item) && !item.Is(exclude))
             list.Add(item);
-
-        return list;
+        
     }
 
+    public static void SmartAdd<T>(this List<T> list, T item)
+    {
+        if (item != null && !list.Contains(item))
+            list.Add(item);
+
+    }
+
+
+    public static bool IsEmpty<T>(this List<T> list)
+    {
+        if (list.Count == 0)
+            return true;
+
+        return false;
+    }
 }
