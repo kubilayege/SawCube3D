@@ -23,8 +23,6 @@ public class LevelManager : MonoBehaviour
     public int currentLevelProgress;
     private Vector3 currentLevelMissionDestination;
 
-
-
     public int xMin;
     public int xMax;
     public int zMin;
@@ -62,18 +60,7 @@ public class LevelManager : MonoBehaviour
         currentLevel = LevelConstructor.instance.InitLevel(levels[currentLevelIndex % levels.Length]);
         currentMissionObjects = JsonConvert.DeserializeObject<MissionObjectData>(currentLevelData.missionObjectsDataFile.text);
 
-        //SpawnTraps();
-
         ProgressLevel();
-    }
-
-    private void SpawnTraps()
-    {
-        Debug.Log("TrapSpawn");
-        for (int i = 0; i < currentLevelData.traps.Length; i++)
-        {
-            Instantiate(currentLevelData.traps[i], currentLevelData.trapPositions[i], currentLevelData.traps[i].transform.rotation, currentLevel.transform);
-        }
     }
 
     public void ProgressLevel()
@@ -90,6 +77,7 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator ProgressAnimation()
     {
+        currentLevelMissionObject.GetComponent<Player>().enabled = false;
         Vector3 from;
         Vector3 to = currentLevelMissionObject.transform.position + Vector3.up*3f;
         float verticalAnimDuration = 1f;
@@ -128,7 +116,6 @@ public class LevelManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        currentLevelMissionObject.GetComponent<Player>().enabled = false;
 
         //FinishLevel
         if (++currentLevelProgress >= currentMissionObjects.data.Count)

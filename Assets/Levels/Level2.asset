@@ -12,11 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db030cd0730124148bd30223f383b5c4, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: 
-  trapPositions: []
-  traps: []
+  trapPositions:
+  - {x: 8, y: 0, z: 13}
+  - {x: 1, y: 0, z: 13}
+  - {x: 4, y: 0, z: -1}
+  - {x: 5, y: 0, z: -1}
+  - {x: -1, y: 0, z: 5}
+  - {x: 9, y: 0, z: 5}
+  traps:
+  - {fileID: 4354122787008279449, guid: 56691239488670a49b68a4b8566cd64a, type: 3}
+  - {fileID: 4354122787008279449, guid: 56691239488670a49b68a4b8566cd64a, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
   missionObjectsDataFile: {fileID: 4900000, guid: 4ec96dbb53f4d604b9b327488841250c,
     type: 3}
   missionObjectDestinations:
-  - {x: 4, y: 0, z: -6}
-  - {x: -9, y: 0, z: 8}
-  - {x: 8, y: 0, z: 15}
+  - {x: 0, y: 0, z: 21}
+  - {x: 4, y: 0, z: 20}
+  - {x: -5, y: 0, z: 22}

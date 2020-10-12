@@ -10,6 +10,4 @@ public class Level : ScriptableObject
 
     public TextAsset missionObjectsDataFile;
     public Vector3[] missionObjectDestinations;
-
-
 }

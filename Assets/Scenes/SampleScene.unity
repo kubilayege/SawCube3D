@@ -4289,7 +4289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 269531132}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: LevelBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8312,6 +8312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - {fileID: 11400000, guid: 089d1717a7280c0498c08626c16fd205, type: 2}
+  - {fileID: 11400000, guid: 4527917c11f94cc479713e46bc9c6b7a, type: 2}
   currentLevelData: {fileID: 0}
   currentLevel: {fileID: 0}
   currentLevelMissionObject: {fileID: 0}
@@ -16072,13 +16073,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.49999917, y: -0, z: -0, w: 0.8660259}
-  m_LocalPosition: {x: 4, y: 23.67, z: -7.63}
+  m_LocalRotation: {x: 0.52403575, y: -0, z: -0, w: 0.8516963}
+  m_LocalPosition: {x: 4, y: 28.7, z: -8.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 60.000004, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 63.207005, y: 0, z: 0}
 --- !u!4 &963467752 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3867209671831741249, guid: 32286feb4d76d494baa6ab305d68b7d6,

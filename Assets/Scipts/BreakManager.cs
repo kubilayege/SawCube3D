@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,8 +54,6 @@ public class BreakManager : MonoBehaviour
             if (curBlock.Is(typeof(Mission)))
             {
                 List<Block> neighbours = new List<Block>();
-                Debug.Log(neighbours.Count);
-                
                 blocks[block.rowIndex, block.colIndex] = null;
 
                 GetNeighbours(neighbours, curBlock, typeof(Center));
@@ -74,21 +73,20 @@ public class BreakManager : MonoBehaviour
                     {
                         blockListsToDestroy.Add(blocksToDestroy);
                     }
-
                 }
-                
 
+
+                var blocks2Destroy = new List<Block>();
 
                 foreach(var list in blockListsToDestroy)
                 {
+                    blocks2Destroy.Join(list);
                     //join same lists
-                    StartCoroutine(BreakAsync(list));
                 }
+                StartCoroutine(BreakAsync(blocks2Destroy));
             }
             else
             {
-
-                Player.main.Fail();
                 //Fail Level
                 LevelManager.instance.ChangeLevel(NextLevelState.Restart);
             }
@@ -105,12 +103,13 @@ public class BreakManager : MonoBehaviour
 
             if(blocks[block.rowIndex, block.colIndex] != null)
             {
-                blocks[block.rowIndex, block.colIndex] = null;
+                Destroy(blocks[block.rowIndex, block.colIndex]) ;
                 Destroy(block.gameObject);
                 missionCount--;
             }
+            blocks[block.rowIndex, block.colIndex] = null;
 
-            yield return new WaitForSeconds(0.01f);
+            yield return null;
         }
 
         if (missionCount <= 0)

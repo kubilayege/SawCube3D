@@ -39,7 +39,17 @@ public static class Helper
         return false;
 
     }
+    public static void Join<T>(this List<T> list, List<T> append)
+    {
+        foreach (var item in append)
+        {
+            if (!list.Contains(item))
+            {
+                list.Add(item);
+            }
+        }
 
+    }
 
     public static bool IsEmpty<T>(this List<T> list)
     {
