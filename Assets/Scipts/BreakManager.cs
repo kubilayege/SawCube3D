@@ -58,8 +58,8 @@ public class BreakManager : MonoBehaviour
 
                 GetNeighbours(neighbours, curBlock, typeof(Center));
                 Destroy(curBlock.gameObject);
-                if (--missionCount <= 0)
-                    LevelManager.instance.ProgressLevel();
+
+                CountMissionBlocks();
 
                 List<List<Block>> blockListsToDestroy = new List<List<Block>>();
                 foreach (var _block in neighbours)
@@ -105,17 +105,30 @@ public class BreakManager : MonoBehaviour
             {
                 Destroy(blocks[block.rowIndex, block.colIndex]) ;
                 Destroy(block.gameObject);
-                missionCount--;
             }
             blocks[block.rowIndex, block.colIndex] = null;
 
             yield return null;
         }
 
-        if (missionCount <= 0)
+        CountMissionBlocks();
+    }
+
+    private void CountMissionBlocks()
+    {
+        int currentBlockCount=0;
+        for (int i = 0; i < _row; i++)
         {
-            LevelManager.instance.ProgressLevel();
+            for (int j = 0; j < _col; j++)
+            {
+                if (blocks[i, j] != null && blocks[i, j].Is(typeof(Mission)))
+                    currentBlockCount++;
+            }
         }
+
+        if (currentBlockCount == 0)
+            LevelManager.instance.ProgressLevel();
+
     }
 
     private static bool CheckNeighbours(Block currentBlock, List<Block> checkedSoFar, List<Block> centerBlocks)
