@@ -23,6 +23,13 @@ public class LevelManager : MonoBehaviour
     public int currentLevelProgress;
     private Vector3 currentLevelMissionDestination;
 
+
+
+    public int xMin;
+    public int xMax;
+    public int zMin;
+    public int zMax;
+
     [SerializeField]
     public MissionObjectData currentMissionObjects;
 
@@ -30,6 +37,7 @@ public class LevelManager : MonoBehaviour
     public Material centerMat;
     public Material missionMat;
 
+    public Coroutine progressCoroutine;
     public static LevelManager instance;
 
     public void Awake()
@@ -47,22 +55,37 @@ public class LevelManager : MonoBehaviour
         currentLevelProgress = 0;
         currentLevelMissionObject = null;
         currentLevelIndex += (int)val;
-
+        progressCoroutine = null;
         if (currentLevel != null) Destroy(currentLevel);
 
         currentLevelData = levels[currentLevelIndex % levels.Length];
         currentLevel = LevelConstructor.instance.InitLevel(levels[currentLevelIndex % levels.Length]);
         currentMissionObjects = JsonConvert.DeserializeObject<MissionObjectData>(currentLevelData.missionObjectsDataFile.text);
 
+        //SpawnTraps();
+
         ProgressLevel();
+    }
+
+    private void SpawnTraps()
+    {
+        Debug.Log("TrapSpawn");
+        for (int i = 0; i < currentLevelData.traps.Length; i++)
+        {
+            Instantiate(currentLevelData.traps[i], currentLevelData.trapPositions[i], currentLevelData.traps[i].transform.rotation, currentLevel.transform);
+        }
     }
 
     public void ProgressLevel()
     {
-        if (currentLevelMissionObject != null)
-            StartCoroutine(ProgressAnimation());
-        else
-            SpawnNextMissionPart();
+        if(progressCoroutine == null)
+        {
+            if (currentLevelMissionObject != null)
+                progressCoroutine = StartCoroutine(ProgressAnimation());
+            else
+                SpawnNextMissionPart();
+        }
+
     }
 
     public IEnumerator ProgressAnimation()
@@ -105,7 +128,7 @@ public class LevelManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-
+        currentLevelMissionObject.GetComponent<Player>().enabled = false;
 
         //FinishLevel
         if (++currentLevelProgress >= currentMissionObjects.data.Count)
@@ -118,6 +141,8 @@ public class LevelManager : MonoBehaviour
     private void SpawnNextMissionPart()
     {
         currentLevelMissionObject = new GameObject();
+        currentLevelMissionObject.AddComponent<Rigidbody>().useGravity =false;
+        currentLevelMissionObject.AddComponent<Player>();
         currentLevelMissionObject.name = "missionObject";
         currentLevelMissionObject.transform.position = Vector3.zero;
         currentLevelMissionObject.transform.parent = currentLevel.transform;
@@ -157,7 +182,7 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-
+        progressCoroutine = null;
         currentLevelMissionDestination = currentLevelData.missionObjectDestinations[currentLevelProgress];
 
     }
