@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db030cd0730124148bd30223f383b5c4, type: 3}
+  m_Name: Level3
+  m_EditorClassIdentifier: 
+  trapPositions:
+  - {x: 8, y: 0, z: 13}
+  - {x: 1, y: 0, z: 13}
+  - {x: 4, y: 0, z: -1}
+  - {x: 5, y: 0, z: -1}
+  - {x: -1, y: 0, z: 5}
+  - {x: 9, y: 0, z: 5}
+  traps:
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  - {fileID: 6857690002689446641, guid: 9145418b1bdd0774cbbf20532941fb49, type: 3}
+  missionObjectsDataFile: {fileID: 4900000, guid: c251766997b13684b8bd783254937c40,
+    type: 3}
+  missionObjectDestinations:
+  - {x: 0, y: 0, z: 21}
+  - {x: 4, y: 0, z: 20}
+  - {x: -5, y: 0, z: 22}
